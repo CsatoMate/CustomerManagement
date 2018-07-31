@@ -32,16 +32,19 @@ public class CustomerController {
     }
 
     @PutMapping("/update/{pId}")
+    @ResponseBody
     public Customer update(@RequestBody Customer pCustomer, @PathVariable Long pId){
         return customerService.updateCheck(pId, pCustomer);
     }
 
     @DeleteMapping("/deletebyid/{pId}")
+    @ResponseBody
     public Customer deleteById(@PathVariable Long pId){
         return customerService.deleteIdCheck(pId);
     }
 
     @DeleteMapping("/delete/{pName}")
+    @ResponseBody
     public List<Customer> deleteByName(@PathVariable String pName){
         return customerService.deleteNameCheck(pName);
     }
