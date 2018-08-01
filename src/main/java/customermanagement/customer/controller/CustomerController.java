@@ -3,11 +3,13 @@ package customermanagement.customer.controller;
 import customermanagement.customer.model.Customer;
 import customermanagement.customer.service.CustomerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 public class CustomerController {
 
     private final CustomerServiceImpl customerService;
@@ -48,4 +50,13 @@ public class CustomerController {
     public List<Customer> deleteByName(@PathVariable String pName){
         return customerService.deleteNameCheck(pName);
     }
+
+    @GetMapping(value = "/")
+    public String index(Model model){
+        model.addAttribute("customers", customerService.findAll());
+        return "index";
+    }
+
+
+
 }
