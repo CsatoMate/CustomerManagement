@@ -2,6 +2,8 @@ package customermanagement.customer.repository;
 
 import customermanagement.customer.model.Customer;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface CustomerRepository extends CrudRepository<Customer, Long> {
+@Repository
+public interface ICustomerRepository extends CrudRepository<Customer, Long> {
 }
