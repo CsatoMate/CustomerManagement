@@ -2,13 +2,12 @@ package customermanagement.customer.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+
 
 @Configuration
 @EnableWebSecurity
@@ -19,7 +18,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                     .antMatchers("/").permitAll()
-                    .antMatchers("/showall").hasRole("USER")
+                    .antMatchers("/showall").hasAnyRole("ADMIN", "USER")
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()
@@ -30,25 +29,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll();
     }
 
-/*    @Autowired
-    public void confiureGlobal(AuthenticationManagerBuilder auth) throws Exception{
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception{
         auth
                 .inMemoryAuthentication()
                     .withUser("Mate")
                     .password("eteo")
                     .roles("USER");
-    }*/
 
+        auth.inMemoryAuthentication().withUser("eteo").password("eteo").roles("ADMIN");
+    }
 
+    @SuppressWarnings("deprecation")
     @Bean
-    @Override
-    public UserDetailsService userDetailsService(){
-        UserDetails user =
-                User.withDefaultPasswordEncoder()
-                    .username("Mate")
-                    .password("eteo")
-                    .roles("USER")
-                    .build();
-        return new InMemoryUserDetailsManager(user);
+    public static NoOpPasswordEncoder passwordEncoder(){
+        return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
     }
 }
