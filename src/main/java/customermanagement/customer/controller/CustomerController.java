@@ -6,6 +6,7 @@ import customermanagement.customer.service.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,7 +31,7 @@ public class CustomerController {
         return customerService.findAll();
     }
 
-    @PostMapping("/add")
+    @PostMapping("/addd")
     @ResponseBody
     public CustomerDTO addCustomer(@Valid @RequestBody Customer pCustomer){
         return customerService.addCustomer(pCustomer);
@@ -54,11 +55,59 @@ public class CustomerController {
         return customerService.deleteNameCheck(pName);
     }
 
-    @GetMapping(value = "/showall")
+
+
+
+
+
+
+
+
+    /**Show all Customer*/
+    @GetMapping(value = "/show")
     public String index(Model model){
         model.addAttribute("customers", customerService.findAll());
         return "show";
     }
+
+    @GetMapping(value = "/add")
+    public String addNewCustomer(Model model){
+        model.addAttribute("customer", new Customer());
+        return "controller";
+    }
+
+    @PostMapping("/add")
+    public String addNewCustomer(@ModelAttribute("customer") Customer customer){
+        customerService.addCustomer(customer);
+        return "controller";
+    }
+
+/*
+    @PostMapping("/add")
+    public String addNewCustomer(@RequestParam("name") String name, @RequestParam("phone") String phone,
+                                 @RequestParam("address") String address){
+        Customer customer = new Customer();
+        customer.setName(name);
+        customer.setPhone(phone);
+        customer.setAddress(address);
+        customerService.addCustomer(customer);
+        return "controller";
+    }
+*/
+
+    /**Delete Customer by ID*/
+    @GetMapping(value = "/remove")
+    public String deleteId(Model model){
+        model.addAttribute("remove", "Done!");
+        return "controller";
+    }
+
+    @PostMapping("/remove")
+    public String deleteId(@RequestParam("deletedID") Long pid){
+        CustomerDTO del = customerService.deleteIdCheck(pid);
+        return "controller";
+    }
+
 
 
 

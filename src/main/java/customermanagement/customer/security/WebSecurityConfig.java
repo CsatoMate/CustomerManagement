@@ -18,7 +18,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                     .antMatchers("/").permitAll()
-                    .antMatchers("/showall").hasAnyRole("ADMIN", "USER")
+                    .antMatchers("/show").hasAnyRole("ADMIN", "USER")
+                    .antMatchers("/customer").hasAnyRole("ADMIN", "USER")
+                    .antMatchers("/add").hasAnyRole("ADMIN", "USER")
+                    .antMatchers("/update/{pId}").hasAnyRole("ADMIN", "USER")
+                    .antMatchers("/deletebyid").hasAnyRole("ADMIN", "USER")
+                    .antMatchers("/delete").hasAnyRole("ADMIN", "USER")
+                    .antMatchers("/controller").hasRole("ADMIN")
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()
@@ -35,9 +41,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .inMemoryAuthentication()
                     .withUser("Mate")
                     .password("eteo")
-                    .roles("USER");
-
-        auth.inMemoryAuthentication().withUser("eteo").password("eteo").roles("ADMIN");
+                    .roles("USER")
+                    .and()
+                    .withUser("eteo").password("eteo").roles("ADMIN");
     }
 
     @SuppressWarnings("deprecation")
