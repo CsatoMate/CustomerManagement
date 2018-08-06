@@ -18,21 +18,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                     .antMatchers("/").permitAll()
-                    .antMatchers("/show").hasAnyRole("ADMIN", "USER")
-                    .antMatchers("/customer").hasAnyRole("ADMIN", "USER")
-                    .antMatchers("/add").hasAnyRole("ADMIN", "USER")
-                    .antMatchers("/update/{pId}").hasAnyRole("ADMIN", "USER")
-                    .antMatchers("/deletebyid").hasAnyRole("ADMIN", "USER")
-                    .antMatchers("/delete").hasAnyRole("ADMIN", "USER")
-                    .antMatchers("/controller").hasRole("ADMIN")
-                    .anyRequest().authenticated()
+                    .antMatchers("/api/customer").hasAnyRole("ADMIN", "USER")
+                    .antMatchers("/api/customer/*").hasRole("ADMIN")
+                .anyRequest().authenticated()
                     .and()
-                .formLogin()
-                    .loginPage("/login")
-                    .permitAll()
+                .httpBasic()
                     .and()
                 .logout()
-                    .permitAll();
+                    .permitAll()
+                    .and()
+                .csrf().disable();
     }
 
     @Override

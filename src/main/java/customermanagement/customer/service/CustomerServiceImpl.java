@@ -18,32 +18,26 @@ public class CustomerServiceImpl implements ICustomerService {
         this.customerRepository = customerRepository;
     }
 
-    /**Convert Customer Entity to DTO*/
+    /**
+     * Convert Customer Entity to DTO
+     * @param customer
+     * @return
+     */
     private static CustomerDTO convertToDTO(Customer customer){
-        CustomerDTO dto = new CustomerDTO();
-        dto.id = customer.getId();
-        dto.name = customer.getName();
-        dto.address = customer.getAddress();
-        dto.phone = customer.getPhone();
-        return dto;
+        return new CustomerDTO(customer.getId(), customer.getName(),customer.getPhone(),customer.getAddress());
     }
 
+    /**
+     * Convert Customer Entity List to DTO List
+     * @param customerList
+     * @return
+     */
     private static List<CustomerDTO> convertToDTOList(List<Customer> customerList){
         List<CustomerDTO> dtoList = new ArrayList<>();
         for (Customer cus: customerList) {
             dtoList.add(convertToDTO(cus));
         }
         return dtoList;
-    }
-
-    private static Customer convertToEntity(CustomerDTO customerDTO){
-        Customer cus = new Customer();
-        cus.setId(customerDTO.id);
-        cus.setName(customerDTO.name);
-        cus.setPhone(customerDTO.phone);
-        cus.setAddress(customerDTO.address);
-
-        return cus;
     }
 
     @Override
@@ -65,9 +59,14 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
-    public CustomerDTO addCustomer(Customer customer) {
+    public boolean existsById(Long id) {
+        return customerRepository.existsById(id);
+    }
+
+    @Override
+    public void addCustomer(CustomerDTO customerDTO) {
+        Customer customer = new Customer(customerDTO);
         customerRepository.save(customer);
-        return convertToDTO(customer);
     }
 
     @Override
@@ -77,47 +76,23 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
-    public void saveCustomer(Customer pCustomer) {
-        customerRepository.save(pCustomer);
+    public void saveCustomer(CustomerDTO customerDTO) {
+        Customer customer = new Customer(customerDTO);
+        customerRepository.save(customer);
     }
 
 
     /**BUSINESS LOGIC START
      * Update Customer by Id*/
-    public CustomerDTO updateCheck(Long pId, CustomerDTO pCustomer){
-        CustomerDTO updateCustomer = findById(pId);
-        if (updateCustomer == null){
-            return null;
+    public void updateCheck(CustomerDTO customerDTO){
+        if(customerRepository.existsById(customerDTO.getId())){
+            saveCustomer(customerDTO);
         }
-        saveCustomer(convertToEntity(pCustomer));
-        return updateCustomer;
     }
 
     /**Delete Customer by ID*/
-    public CustomerDTO deleteIdCheck(Long pId){
+    public void deleteIdCheck(Long pId){
         CustomerDTO aDelete = findById(pId);
-        if (aDelete == null){
-            return null;
-        }
-        deleteById(pId);
-        return  aDelete;
+        deleteById(aDelete.getId());
     }
-
-    /** Delete Customer by Name*/
-    public List<CustomerDTO> deleteNameCheck(String pName){
-        List<CustomerDTO> all = findAll();
-        ArrayList<CustomerDTO> aSorted = new ArrayList<>();
-        for (CustomerDTO cus: all) {
-            deleteById(cus.id);
-            aSorted.add(cus);
-        }
-        if (aSorted.size() > 0){
-            return aSorted;
-        }
-        else{
-            return null;
-        }
-    }
-
-
 }

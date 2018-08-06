@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -8,25 +9,25 @@
 <h1> Customer management: </h1>
 <h2>Add Customer:</h2>
 <form action="#" th:action="@{/add}" th:object="${customer}" method="post">
-    <label> Name: <input type="text" th:field="${customer.name}" id="name" name="name" /></label>
-    <br />
-    <label> Phone: <input type="tel" th:text="${customer.phone}" id="phone" name="phone" /></label>
-    <br />
-    <label> Address: <input type="text" th:text="${customer.address}" id="address" name="address" /></label>
-    <br /><br />
+    <label> Name: <input type="text" id="name" name="name"/></label>
+    <br/>
+    <label> Phone: <input type="tel" id="phone" name="phone"/></label>
+    <br/>
+    <label> Address: <input type="text" id="address" name="address"/></label>
+    <br/><br/>
     <button type="submit">Add customer</button>
 </form>
 
 
 <h2>Remove Customer:</h2>
 <form action="#" th:action="@{/remove}" method="post">
-    <label> User ID: <input type="number" id="id" name="deletedID" /></label>
-    <br /><br />
+    <label> User ID: <input type="number" id="id" name="deletedID"/></label>
+    <br/><br/>
     <button type="submit">Remove</button>
-    <br />
+    <br/>
 </form>
-<br /><br />
+<br/><br/>
 <a href="/login" th:href="@{/show}">Customer list page</a>
 
 </body>
-</html>
+</html>-->

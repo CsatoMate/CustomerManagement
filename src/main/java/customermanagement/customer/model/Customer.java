@@ -1,5 +1,7 @@
 package customermanagement.customer.model;
 
+import customermanagement.customer.dto.CustomerDTO;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,7 +23,15 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(String name, String phone, String address) {
+    public Customer(CustomerDTO customerDTO) {
+        this.id = customerDTO.getId();
+        this.name = customerDTO.getName();
+        this.phone = customerDTO.getPhone();
+        this.address = customerDTO.getAddress();
+    }
+
+    public Customer(Long id, String name, String phone, String address) {
+        this.id = id;
         this.name = name;
         this.phone = phone;
         this.address = address;
