@@ -20,8 +20,8 @@ public class CustomerServiceImpl implements ICustomerService {
 
     /**
      * Convert Customer Entity to DTO
-     * @param customer
-     * @return
+     * @param customer - customer type
+     * @return - return customerDTO type
      */
     private static CustomerDTO convertToDTO(Customer customer){
         return new CustomerDTO(customer.getId(), customer.getName(),customer.getPhone(),customer.getAddress());
@@ -29,8 +29,8 @@ public class CustomerServiceImpl implements ICustomerService {
 
     /**
      * Convert Customer Entity List to DTO List
-     * @param customerList
-     * @return
+     * @param customerList - customer list
+     * @return - customerDTO list
      */
     private static List<CustomerDTO> convertToDTOList(List<Customer> customerList){
         List<CustomerDTO> dtoList = new ArrayList<>();
@@ -82,17 +82,22 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
 
-    /**BUSINESS LOGIC START
-     * Update Customer by Id*/
+    /**
+     * Check updating customer exist or not
+     * @param customerDTO - customerDTO type
+     */
     public void updateCheck(CustomerDTO customerDTO){
         if(customerRepository.existsById(customerDTO.getId())){
             saveCustomer(customerDTO);
         }
     }
 
-    /**Delete Customer by ID*/
-    public void deleteIdCheck(Long pId){
-        CustomerDTO aDelete = findById(pId);
+    /**
+     * Check deleted customer by id is exist or not
+     * @param id - customer ID
+     */
+    public void deleteIdCheck(Long id){
+        CustomerDTO aDelete = findById(id);
         deleteById(aDelete.getId());
     }
 }

@@ -7,51 +7,51 @@ import java.util.List;
 public interface ICustomerService {
     /**
      * Return all customers from database
-     * @return
+     * @return - customerDTO list
      */
     List<CustomerDTO> findAll();
 
     /**
      * Return customer by ID from database
-     * @param pId
-     * @return
+     * @param id - customer id
+     * @return - return with customerDTO
      */
-    CustomerDTO findById(Long pId);
+    CustomerDTO findById(Long id);
 
     /**
      * Check ID is Exist or Not
-     * @param id
-     * @return
+     * @param id - customer ID
+     * @return - true or false
      */
     boolean existsById(Long id);
 
     /**
      * Add new customer to database
-     * @param pCustomer
+     * @param customer - customerDTO
      */
-    void addCustomer(CustomerDTO pCustomer);
+    void addCustomer(CustomerDTO customer);
 
     /**
      * Delete customer by ID from database
-     * @param pId
+     * @param id - customer ID
      */
-    void deleteById(Long pId);
+    void deleteById(Long id);
 
     /**
      * Update customer to database
-     * @param pCustomer
+     * @param customer - customerDTO
      */
-    void saveCustomer(CustomerDTO pCustomer);
+    void saveCustomer(CustomerDTO customer);
 
     /**
      * Check updating customer is exist
-     * @param pCustomer
+     * @param customer - customerDTO
      */
-    void updateCheck(CustomerDTO pCustomer);
+    void updateCheck(CustomerDTO customer);
 
     /**
      * Check deleting customer is exist
-     * @param pId
+     * @param id - customer ID
      */
-    void deleteIdCheck(Long pId);
+    void deleteIdCheck(Long id);
 }
