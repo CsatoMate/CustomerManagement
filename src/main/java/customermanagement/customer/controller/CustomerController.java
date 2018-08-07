@@ -19,19 +19,19 @@ public class CustomerController {
     }
 
 
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     @ResponseBody
     public void addCustomer(@RequestBody CustomerDTO customerDTO){
         customerService.addCustomer(customerDTO);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     @ResponseBody
     public void deleteCustomer(@PathVariable Long id){
         customerService.deleteIdCheck(id);
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
+    @PutMapping
     @ResponseBody
     public void updateCustomer(@RequestBody CustomerDTO customerDTO){
         customerService.updateCheck(customerDTO);
