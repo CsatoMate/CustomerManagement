@@ -1,13 +1,15 @@
 package customermanagement.customer.service;
 
+import customermanagement.customer.dto.CustomerDTO;
 import customermanagement.customer.model.Customer;
 import customermanagement.customer.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
+import static customermanagement.customer.mapper.Mapper.convertToDTO;
+import static customermanagement.customer.mapper.Mapper.convertToDTOList;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -19,20 +21,34 @@ public class CustomerServiceImpl implements CustomerService {
         this.customerRepository = customerRepository;
     }
 
+
     @Override
-    public List<Customer> findAll() {
-        return (List<Customer>) customerRepository.findAll();
+    public List<CustomerDTO> findAll() {
+        List<Customer> customerList = (List<Customer>) customerRepository.findAll();
+        return convertToDTOList(customerList);
+    }
+
+
+    @Override
+    public CustomerDTO findById(Long pId) {
+        Optional<Customer> cus = customerRepository.findById(pId);
+        if(!cus.isPresent()){
+            return null;
+        }
+        Customer customer = cus.get();
+        return convertToDTO(customer);
+
     }
 
     @Override
-    public Optional<Customer> findById(Long pId) {
-        return customerRepository.findById(pId);
+    public boolean existsById(Long id) {
+        return customerRepository.existsById(id);
     }
 
     @Override
-    public Customer addCustomer(Customer pCustomer) {
-        customerRepository.save(pCustomer);
-        return pCustomer;
+    public void addCustomer(CustomerDTO customerDTO) {
+        Customer customer = new Customer(customerDTO);
+        customerRepository.save(customer);
     }
 
     @Override
@@ -42,57 +58,28 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void deleteByName(Customer pCustomer) {
-        customerRepository.delete(pCustomer);
-    }
-
-    @Override
-    public void saveCustomer(Customer pCustomer) {
-        customerRepository.save(pCustomer);
+    public void saveCustomer(CustomerDTO customerDTO) {
+        Customer customer = new Customer(customerDTO);
+        customerRepository.save(customer);
     }
 
 
-    /**BUSINESS LOGIC START
-     * Update Customer by Id*/
-    public Customer updateCheck(Long pId, Customer pCustomer){
-        Optional<Customer> updateCustomer = findById(pId);
-        if(!updateCustomer.isPresent()){
-            return null;
-        }
-        pCustomer.setId(pId);
-        saveCustomer(pCustomer);
-        return pCustomer;
-    }
-
-    /**Delete Customer by ID*/
-    public Customer deleteIdCheck(Long pId){
-        Optional<Customer> aDelete = findById(pId);
-        if(!aDelete.isPresent()){
-            return null;
-        }
-        Customer aTemp = aDelete.get();
-        deleteById(pId);
-        return  aTemp;
-    }
-
-    /** Delete Customer by Name*/
-    public List<Customer> deleteNameCheck(String pName){
-        List<Customer> all = findAll();
-        ArrayList<Customer> aSorted = new ArrayList<>();
-        for (Customer cus: all) {
-            if (cus.getName().equals(pName)) {
-                deleteByName(cus);
-                aSorted.add(cus);
-            }
-
-        }
-        if (aSorted.size() > 0){
-            return aSorted;
-        }
-        else{
-            return null;
+    /**
+     * Check updating customer exist or not
+     * @param customerDTO - customerDTO type
+     */
+    public void updateCheck(CustomerDTO customerDTO){
+        if(customerRepository.existsById(customerDTO.getId())){
+            saveCustomer(customerDTO);
         }
     }
 
-
+    /**
+     * Check deleted customer by id is exist or not
+     * @param id - customer ID
+     */
+    public void deleteIdCheck(Long id){
+        CustomerDTO aDelete = findById(id);
+        deleteById(aDelete.getId());
+    }
 }

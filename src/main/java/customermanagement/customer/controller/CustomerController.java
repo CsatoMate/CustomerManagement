@@ -1,62 +1,72 @@
 package customermanagement.customer.controller;
 
-import customermanagement.customer.model.Customer;
-import customermanagement.customer.service.CustomerServiceImpl;
+import customermanagement.customer.dto.CustomerDTO;
+import customermanagement.customer.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
+@RequestMapping("/api/customer")
 public class CustomerController {
 
-    private final CustomerServiceImpl customerService;
+
+    private final CustomerService customerService;
 
     @Autowired
-    public CustomerController(CustomerServiceImpl customerService) {
+    public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
     }
 
-
-    /**Return all data from database*/
-    @RequestMapping(value = "/customer", method = RequestMethod.GET)
+    /**
+     * Return customer by ID from database
+     * @param id - customer ID
+     * @return - return customer by ID
+     */
+    @GetMapping(value = "/{id}")
     @ResponseBody
-    public List<Customer> findAll(){
+    public CustomerDTO findById(@PathVariable Long id){
+        return customerService.findById(id);
+    }
+
+    /**
+     * Return all customers from database
+     * @return - return with all customer
+     */
+    @GetMapping
+    @ResponseBody
+    public List<CustomerDTO> findAll(){
         return customerService.findAll();
     }
 
-    @PostMapping("/add")
+    /**
+     * Add new customer
+     * @param customerDTO - customerDTO
+     */
+    @PostMapping
     @ResponseBody
-    public Customer addCustomer(@RequestBody Customer pCustomer){
-        return customerService.addCustomer(pCustomer);
+    public void addCustomer(@RequestBody CustomerDTO customerDTO){
+        customerService.addCustomer(customerDTO);
     }
 
-    @PutMapping("/update/{pId}")
+    /**
+     * Delete customer
+     * @param id - customer ID
+     */
+    @DeleteMapping(value = "/{id}")
     @ResponseBody
-    public Customer update(@RequestBody Customer pCustomer, @PathVariable Long pId){
-        return customerService.updateCheck(pId, pCustomer);
+    public void deleteCustomer(@PathVariable Long id){
+        customerService.deleteIdCheck(id);
     }
 
-    @DeleteMapping("/deletebyid/{pId}")
+    /**
+     * Update customer
+     * @param customerDTO - customer DTO
+     */
+    @PutMapping
     @ResponseBody
-    public Customer deleteById(@PathVariable Long pId){
-        return customerService.deleteIdCheck(pId);
+    public void updateCustomer(@RequestBody CustomerDTO customerDTO){
+        customerService.updateCheck(customerDTO);
     }
-
-    @DeleteMapping("/delete/{pName}")
-    @ResponseBody
-    public List<Customer> deleteByName(@PathVariable String pName){
-        return customerService.deleteNameCheck(pName);
-    }
-
-    @GetMapping(value = "/")
-    public String index(Model model){
-        model.addAttribute("customers", customerService.findAll());
-        return "index";
-    }
-
-
-
 }

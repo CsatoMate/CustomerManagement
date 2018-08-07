@@ -1,20 +1,57 @@
 package customermanagement.customer.service;
 
-import customermanagement.customer.model.Customer;
+import customermanagement.customer.dto.CustomerDTO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface CustomerService {
-    List<Customer> findAll();
+    /**
+     * Return all customers from database
+     * @return - customerDTO list
+     */
+    List<CustomerDTO> findAll();
 
-    Optional<Customer> findById(Long pId);
+    /**
+     * Return customer by ID from database
+     * @param id - customer id
+     * @return - return with customerDTO
+     */
+    CustomerDTO findById(Long id);
 
-    Customer addCustomer(Customer pCustomer);
+    /**
+     * Check ID is Exist or Not
+     * @param id - customer ID
+     * @return - true or false
+     */
+    boolean existsById(Long id);
 
-    void deleteById(Long pId);
+    /**
+     * Add new customer to database
+     * @param customer - customerDTO
+     */
+    void addCustomer(CustomerDTO customer);
 
-    void deleteByName(Customer pCustomer);
+    /**
+     * Delete customer by ID from database
+     * @param id - customer ID
+     */
+    void deleteById(Long id);
 
-    void saveCustomer(Customer pCustomer);
+    /**
+     * Update customer to database
+     * @param customer - customerDTO
+     */
+    void saveCustomer(CustomerDTO customer);
+
+    /**
+     * Check updating customer is exist
+     * @param customer - customerDTO
+     */
+    void updateCheck(CustomerDTO customer);
+
+    /**
+     * Check deleting customer is exist
+     * @param id - customer ID
+     */
+    void deleteIdCheck(Long id);
 }

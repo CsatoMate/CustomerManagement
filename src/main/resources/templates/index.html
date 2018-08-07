@@ -1,48 +1,30 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Template index</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
+    <title>Spring Security</title>
+    <meta charset="utf-8" />
 </head>
-<body>
+    <body>
+        <div class="container">
 
-<div class="container">
+            <h3>Customer List</h3>
+            <table border="1">
+                <tr>
+                    <td> Customer id</td>
+                    <td> Customer name</td>
+                    <td> Customer phone</td>
+                    <td> Customer address</td>
+                </tr>
 
-    <h3>Customer List</h3>
-    <table border="1">
-        <tr>
-            <td> Customer id</td>
-            <td> Customer name</td>
-            <td> Customer phone</td>
-            <td> Customer address</td>
-        </tr>
-
-        <tr th:each="emp :${customers}">
-            <td th:text="${emp.id}">id</td>
-            <td th:text="${emp.name}">name</td>
-            <td th:text="${emp.phone}">phone</td>
-            <td th:text="${emp.address}">address</td>
-        </tr>
-    </table>
-
-</div>
-
-</body>
+                <tr th:each="emp :${customers}">
+                    <td th:text="${emp.id}">id</td>
+                    <td th:text="${emp.name}">name</td>
+                    <td th:text="${emp.phone}">phone</td>
+                    <td th:text="${emp.address}">address</td>
+                </tr>
+            </table>
+            <br />
+        </div>
+    </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
