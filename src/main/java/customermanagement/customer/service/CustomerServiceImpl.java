@@ -2,43 +2,25 @@ package customermanagement.customer.service;
 
 import customermanagement.customer.dto.CustomerDTO;
 import customermanagement.customer.model.Customer;
-import customermanagement.customer.repository.ICustomerRepository;
+import customermanagement.customer.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-@Service
-public class CustomerServiceImpl implements ICustomerService {
+import static customermanagement.customer.mapper.Mapper.convertToDTO;
+import static customermanagement.customer.mapper.Mapper.convertToDTOList;
 
-    private final ICustomerRepository customerRepository;
+@Service
+public class CustomerServiceImpl implements CustomerService {
+
+    private final CustomerRepository customerRepository;
 
     @Autowired
-    public CustomerServiceImpl(ICustomerRepository customerRepository) {
+    public CustomerServiceImpl(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
 
-    /**
-     * Convert Customer Entity to DTO
-     * @param customer - customer type
-     * @return - return customerDTO type
-     */
-    private static CustomerDTO convertToDTO(Customer customer){
-        return new CustomerDTO(customer.getId(), customer.getName(),customer.getPhone(),customer.getAddress());
-    }
-
-    /**
-     * Convert Customer Entity List to DTO List
-     * @param customerList - customer list
-     * @return - customerDTO list
-     */
-    private static List<CustomerDTO> convertToDTOList(List<Customer> customerList){
-        List<CustomerDTO> dtoList = new ArrayList<>();
-        for (Customer cus: customerList) {
-            dtoList.add(convertToDTO(cus));
-        }
-        return dtoList;
-    }
 
     @Override
     public List<CustomerDTO> findAll() {

@@ -1,21 +1,43 @@
 package customermanagement.customer.controller;
 
 import customermanagement.customer.dto.CustomerDTO;
-import customermanagement.customer.service.ICustomerService;
+import customermanagement.customer.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/customer")
 public class CustomerController {
 
 
-    private final ICustomerService customerService;
+    private final CustomerService customerService;
 
     @Autowired
-    public CustomerController(ICustomerService customerService) {
+    public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
+    }
+
+    /**
+     * Return customer by ID from database
+     * @param id - customer ID
+     * @return - return customer by ID
+     */
+    @GetMapping(value = "/{id}")
+    @ResponseBody
+    public CustomerDTO findById(@PathVariable Long id){
+        return customerService.findById(id);
+    }
+
+    /**
+     * Return all customers from database
+     * @return - return with all customer
+     */
+    @GetMapping
+    @ResponseBody
+    public List<CustomerDTO> findAll(){
+        return customerService.findAll();
     }
 
     /**

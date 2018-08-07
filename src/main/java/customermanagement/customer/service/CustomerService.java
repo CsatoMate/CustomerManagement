@@ -4,7 +4,7 @@ import customermanagement.customer.dto.CustomerDTO;
 
 import java.util.List;
 
-public interface ICustomerService {
+public interface CustomerService {
     /**
      * Return all customers from database
      * @return - customerDTO list
