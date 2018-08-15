@@ -1,8 +1,6 @@
 package customermanagement.customer;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import customermanagement.customer.dto.CustomerDTO;
 import org.junit.Test;
@@ -15,14 +13,15 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.io.IOException;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CustomerApplication.class, webEnvironment= SpringBootTest.WebEnvironment.DEFINED_PORT)
+@TestPropertySource(locations = "classpath:test.properties")
 public class CustomerRestTest {
 
     @LocalServerPort
@@ -34,22 +33,23 @@ public class CustomerRestTest {
 
     @Test
     public void testCreate() throws Exception{
-        CustomerDTO customerDTO = new CustomerDTO( new Long(99), "Magdi", "06309876655", "5432. Emőd");
+        CustomerDTO customerDTO = new CustomerDTO( 99L, "Endre", "06309876655", "5432. Nem kéne");
 
         String inputJson = this.mapToJson(customerDTO);
+        String uri = "/api/customer";
 
         HttpEntity<CustomerDTO> entity = new HttpEntity<CustomerDTO>(customerDTO, headers);
-
-        ResponseEntity<String> response = testRestTemplate.exchange(formURL("/api/customer"), HttpMethod.POST, entity, String.class);
+        ResponseEntity<String> response = testRestTemplate.exchange(formURL(uri), HttpMethod.POST,entity,String.class);
 
         String responseInJson = response.getBody();
         assertThat(responseInJson).isEqualTo(inputJson);
     }
 
 
+
     @Test
     public void testGetById() throws Exception{
-        CustomerDTO customerDTO = new CustomerDTO((long) 99, "Magdi", "06309876655", "5432. Emőd");
+        CustomerDTO customerDTO = new CustomerDTO(1L, "Géza", "06309876655", "5432. Emőd");
         String inputJson = mapToJson(customerDTO);
 
         HttpEntity<CustomerDTO> entity = new HttpEntity<CustomerDTO>(customerDTO, headers);
@@ -57,7 +57,9 @@ public class CustomerRestTest {
                 formURL("/api/customer"),
                 HttpMethod.POST, entity , String.class);
 
-        String bodyJsonResponse = testRestTemplate.getForObject(formURL("/api/customer/99"), String.class);
+        String uri = "/api/customer/1";
+
+        String bodyJsonResponse = testRestTemplate.getForObject(formURL(uri), String.class);
         assertThat(bodyJsonResponse).isEqualTo(inputJson);
 
     }
@@ -65,19 +67,20 @@ public class CustomerRestTest {
 
 
 
-    private String mapToJson(CustomerDTO cus) throws JsonProcessingException {
+
+    private String mapToJson(Object object) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(cus);
+        return mapper.writeValueAsString(object);
     }
 
 
-    private <T> T mapFromJson(String json, Class<T> clazz) throws JsonParseException, JsonMappingException, IOException {
+/*    private <T> T mapFromJson(String json, Class<T> clazz) throws JsonParseException, JsonMappingException, IOException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(json, clazz);
-    }
+    }*/
 
 
     private String formURL(String uri){
-        return "http://localhost:"+ port + uri;
+        return "http://localhost:" + port + uri;
     }
 }

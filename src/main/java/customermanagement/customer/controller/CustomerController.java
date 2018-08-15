@@ -46,8 +46,9 @@ public class CustomerController {
      */
     @PostMapping
     @ResponseBody
-    public void addCustomer(@RequestBody CustomerDTO customerDTO){
+    public CustomerDTO addCustomer(@RequestBody CustomerDTO customerDTO){
         customerService.addCustomer(customerDTO);
+        return customerDTO;
     }
 
     /**

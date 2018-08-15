@@ -49,6 +49,7 @@ public class CustomerServiceImpl implements CustomerService {
     public void addCustomer(CustomerDTO customerDTO) {
         Customer customer = new Customer(customerDTO);
         customerRepository.save(customer);
+        //return customerDTO;
     }
 
     @Override
