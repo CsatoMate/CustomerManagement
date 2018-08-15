@@ -81,11 +81,12 @@ public class CustomerApplicationControllerTests {
 
         CustomerDTO example1 = new CustomerDTO((long) 10, "Józsi", "1201212", "4345, erteg");
 
-        byte[] exampleJson = toJson(example1);
+        //byte[] exampleJson = toJson(example1);
+        String eJson = mapToJson(example1);
 
         //add Test
         mockMvc.perform(post("/api/customer/")
-                    .content(exampleJson)
+                    .content(eJson)
                     .accept(MediaType.APPLICATION_JSON)
                     .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -130,54 +131,4 @@ public class CustomerApplicationControllerTests {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(json, clazz);
     }
-
-    /*@Test
-    public void testDelete() throws Exception{
-        Long id = new Long(18);
-
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete("/api/customer/{id}", id))
-                .andReturn();
-
-        String content = result.getResponse().getContentAsString();
-        int status = result.getResponse().getStatus();
-
-        Assert.assertEquals("failure - expected HTTP status 200", 200, status);
-        Assert.assertTrue("failure - HTTP response body to be empty", content.trim().length() == 0);
-
-
-        CustomerDTO deletingCustomer = customerTestService.findById(id);
-
-        Assert.assertNull("failure - Customer to be null", deletingCustomer);
-    }
-
-    @Test
-    public void testUpdate() throws Exception{
-        Long id = new Long(1);
-
-        CustomerDTO update = customerTestService.findById(id);
-        update.setName("Kálmán");
-
-        String inputJson = mapToJson(update);
-
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/api/customer")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(inputJson))
-                    .andReturn();
-
-        String content = result.getResponse().getContentAsString();
-        int status = result.getResponse().getStatus();
-
-        Assert.assertEquals("failure - expected HTTP status 200", 200, status);
-        Assert.assertTrue("failure - HTTP response body to be empty", content.trim().length() == 0);
-
-        CustomerDTO deletingCustomer = mapFromJson(content, CustomerDTO.class);
-
-        Assert.assertNotNull("failure - expected Customer not null", update);
-        Assert.assertEquals("failure - expected greeting id unchanged", update.getId(), deletingCustomer.getId());
-        Assert.assertEquals("failure - expected updated customer text match", update, deletingCustomer);
-
-
-    }*/
-
 }
